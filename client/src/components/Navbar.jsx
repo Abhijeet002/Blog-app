@@ -164,7 +164,7 @@ const Navbar = () => {
             </button>
             {isOpenGenres && (
               <div className="pl-4">
-                <Link to="/genres/entertainment" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Entertainment</Link>
+                <Link to="/?genres=entertainment" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Entertainment</Link>
                 <Link to="/genres/lifestyle" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Lifestyle</Link>
                 <Link to="/genres/technology" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Technology</Link>
                 <Link to="/genres/travel" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Travel</Link>
