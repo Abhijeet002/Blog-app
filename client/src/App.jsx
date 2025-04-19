@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Explore from "./pages/Explore";
+import CategoryPage from "./pages/CategoryPage";
 
 const Layout = () => {
   return (
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: "/explore",
         element: <Explore />,
       },
+      {
+        path :"/category/:category",
+        element: <CategoryPage />,
+      }
     ],
   },
   {
