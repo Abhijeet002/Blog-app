@@ -14,6 +14,11 @@ const CategoryPage = () => {
           <div key={post.id} className="mb-8 p-6 bg-white rounded-xl shadow">
             <h2 className="text-2xl font-semibold">{post.title}</h2>
             <p className="text-gray-600">{post.description}</p>
+            <img
+              src={post.img}
+              alt={post.title}
+              className="mt-4 w-full h-64 object-cover rounded-lg"
+            />
           </div>
         ))
       ) : (
