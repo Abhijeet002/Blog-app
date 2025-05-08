@@ -49,7 +49,7 @@ const Home = () => {
 
       {/* Floating Create Button */}
       <Link
-        to="/create"
+        to="/write"
         className="fixed bottom-6 right-6 bg-[#3fcd9d] hover:bg-[#34ba8b] text-white rounded-full p-4 shadow-lg transition-all duration-300 group z-50"
         title="Write a new blog"
       >
