@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import PostRoutes from "./routes/posts.js";
 import AuthRoutes from "./routes/auth.js";
 import UserRoutes from "./routes/users.js";
@@ -15,6 +16,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/test", (req, res) => {
   res.json({ message: "Server is working!" });
