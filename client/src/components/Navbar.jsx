@@ -251,11 +251,15 @@
 
 
 import React, { useState } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../contextProvider/authContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGenres, setIsOpenGenres] = useState(false);
+
+  const {currentUser} = useContext(AuthContext);
 
   return (
     <header className="bg-white shadow-md">
@@ -283,7 +287,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            <Link to="/profile" className="hover:text-teal-600 transition-colors">Profile</Link>
+            <Link to="/profile" className="hover:text-teal-600 transition-colors">{currentUser.username}</Link>
 
             {/* Logout Button */}
             <button className="relative overflow-hidden px-4 py-2 text-sm font-medium text-teal-600 bg-white rounded group border border-teal-200">
@@ -330,7 +334,7 @@ const Navbar = () => {
             )}
           </div>
 
-          <Link to="/profile" className="block py-2 text-gray-700 hover:text-teal-600">Profile</Link>
+          <Link to="/profile" className="block py-2 text-gray-700 hover:text-teal-600">{currentUser?.username}</Link>
           <button className="w-full text-left mt-2 px-4 py-2 text-sm text-teal-600 border border-teal-200 rounded bg-white">Logout</button>
         </div>
       )}
