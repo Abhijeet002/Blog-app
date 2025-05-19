@@ -26,3 +26,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+/api/.env
+/api/.env.*.local
+**.env

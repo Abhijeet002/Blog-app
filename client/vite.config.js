@@ -10,5 +10,16 @@ export default defineConfig({
   resolve: {
       "@": path.resolve(path.dirname(fileURLToPath(import.meta.url)), "./src")
     },
+    server: {
+    proxy: {
+      // Any request starting with /api or /auth will be proxied
+      '/auth': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+    
   }
 )
