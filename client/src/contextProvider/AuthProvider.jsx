@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "./authContext";
+import { Navigate } from "react-router-dom";
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
@@ -25,6 +26,7 @@ export const AuthContextProvider = ({ children }) => {
     try {
       await axios.post("/auth/logout", {}, { withCredentials: true });
       setCurrentUser(null);
+      Navigate("/login")
     } catch (err) {
       console.error("Logout failed:", err);
     }
