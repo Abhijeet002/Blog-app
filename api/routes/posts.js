@@ -1,8 +1,14 @@
+// api\routes\posts.js
+
 import express from "express";
-import {addPost} from "../controllers/posts.js";
+import {addPost, deletePost, getAllPost, getPostByCategory, updatePost} from "../controllers/posts.js";
 
 const router = express.Router();
 
-router.get("/", addPost);
+router.get("/",getAllPost);
+router.get("/category/:category", getPostByCategory);
+router.post("/", addPost);
+router.delete("/:id", deletePost);
+router.put("/:id", updatePost);
 
 export default router;
