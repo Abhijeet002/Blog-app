@@ -1,3 +1,5 @@
+// client\src\App.jsx
+
 import React from "react";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Write from "./pages/Write";
@@ -30,21 +32,25 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/post/:id",
+        path: "post/:id",
         element: <Single />,
       },
       {
-        path: "/write",
+        path: "write",
         element: <Write />,
       },
       {
-        path: "/explore",
+        path: "explore/",
         element: <Explore />,
       },
       {
-        path :"/category/:category",
+        path :"category/:category",
         element: <CategoryPage />,
-      }
+      },
+      {
+        path: "*",
+        element: <div>404 Not Found</div>,
+      },
     ],
   },
   {
