@@ -5,33 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-// import { use } from "react";
-
-// export const register = (req, res) => {
-  //   const checkUserQuery  = "SELECT * FROM users WHERE email = $1 OR username = $2";
-  //   const {username, email, password} = req.body;
-  //   db.query(checkUserQuery , email, username, (err, data) => {
-    //     if (err) return res.status(500).json({ error: err.message });
-    //     if (data.rows.length) return res.status(409).json("User already exists!");
-    
-    //     const saltRounds = 10;
-    //     const salt = bcrypt.genSaltSync(saltRounds);
-//     const hash = bcrypt.hashSync(password, salt);
-
-//     const insertQuery =
-//       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
-//     const values = [username, email, hash];
-//     db.query(insertQuery , values, (err2,data)=>{
-  //       if (err2) {
-    //         console.error("Error creating user:", err2);
-    //         return res.status(500).json({ error: err2.message });
-    //       }
-    //       return res.status(200).json("User created successfully");
-    //     });
-    
-    //   });
-    // };
-    
 const jwt_secret_key = process.env.JWT_SECRET
 export const register = async (req, res) => {
   try {
@@ -78,7 +51,7 @@ export const login = async (req, res) => {
       return res.status(401).json("Invalid email or password");
     }
 
-    // Optionally: create and send token/session here
+    //  create and send token/session here
     const token = jwt.sign({ id: user.id }, jwt_secret_key, { expiresIn: "1h" });
     const { password: removed_Password, ...otherData } = checkResult.rows[0];
     res
@@ -95,6 +68,13 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
-  res.json({ message: "User logged out successfully" });
+export const logout = async() => {
+  try {
+      await axios.post("/auth/logout", {}, { withCredentials: true });
+      setCurrentUser(null);
+      localStorage.removeItem("user"); // clear user data
+      navigate("/login"); // redirect user to login page
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
 };
