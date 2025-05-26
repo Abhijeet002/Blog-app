@@ -44,7 +44,7 @@ const Register = () => {
           Fill in the details to register a new account.
         </p>
 
-        <form  //onSubmit={handleSubmit} 
+        <form 
         className="flex flex-col gap-4 font-body">
           <input
             required

@@ -93,7 +93,6 @@
 
 // export default Navbar;
 
-
 // import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';
 
@@ -183,7 +182,6 @@
 
 // export default Navbar;
 
-
 // import React, { useContext } from "react";
 // import { Link } from "react-router-dom";
 // import { AuthContext } from "../context/authContext";
@@ -249,17 +247,17 @@
 
 // export default Navbar;
 
-
-import React, { useState } from 'react';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../contextProvider/authContext';
+// client\src\components\Navbar.jsx
+import React, { useState } from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../contextProvider/authContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGenres, setIsOpenGenres] = useState(false);
 
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
 
   return (
     <header className="bg-white shadow-md">
@@ -271,39 +269,100 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-            <Link to="/" className="hover:text-teal-600 transition-colors">Home</Link>
-            <Link to="/login" className="hover:text-teal-600 transition-colors">Login</Link>
-            <Link to="/register" className="hover:text-teal-600 transition-colors">Register</Link>
+            <Link to="/" className="hover:text-teal-600 transition-colors">
+              Home
+            </Link>
+            {/* <Link to="/register" className="hover:text-teal-600 transition-colors">Register</Link> */}
 
             {/* Genres Dropdown */}
             <div className="relative group">
-              <button className="hover:text-teal-600 transition-colors">Genres</button>
+              <button className="hover:text-teal-600 transition-colors">
+                Genres
+              </button>
               <div className="absolute left-0 mt-2 w-44 bg-white border rounded-md shadow-md opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transform -translate-y-2 transition-all duration-300 z-20">
-                <Link to="/category/entertainment" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">Entertainment</Link>
-                <Link to="/category/lifestyle" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">Lifestyle</Link>
-                <Link to="/category/technology" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">Technology</Link>
-                <Link to="/category/travel" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">Travel</Link>
-                <Link to="/category/health" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">Health</Link>
+                <Link
+                  to="/category/entertainment"
+                  className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
+                >
+                  Entertainment
+                </Link>
+                <Link
+                  to="/category/lifestyle"
+                  className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
+                >
+                  Lifestyle
+                </Link>
+                <Link
+                  to="/category/technology"
+                  className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
+                >
+                  Technology
+                </Link>
+                <Link
+                  to="/category/travel"
+                  className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
+                >
+                  Travel
+                </Link>
+                <Link
+                  to="/category/health"
+                  className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
+                >
+                  Health
+                </Link>
               </div>
             </div>
-
-            <Link to="/profile" className="hover:text-teal-600 transition-colors">{currentUser.username}</Link>
+            {currentUser && (
+              <Link
+                to="/profile"
+                className="hover:text-teal-600 transition-colors"
+              >
+                {currentUser.username}
+              </Link>
+            )}
 
             {/* Logout Button */}
-            <button className="relative overflow-hidden px-4 py-2 text-sm font-medium text-teal-600 bg-white rounded group border border-teal-200">
-              <span className="relative z-10">Logout</span>
-              <span className="absolute inset-0 bg-teal-50 top-full group-hover:top-0 transition-all duration-300 ease-in-out z-0"></span>
-            </button>
+            {currentUser ? (
+              <button
+                onClick={logout}
+                className="relative overflow-hidden px-4 py-2 text-sm font-medium text-teal-600 bg-white rounded group border border-teal-200"
+              >
+                <span className="relative z-10">Logout</span>
+                <span className="absolute inset-0 bg-teal-50 top-full group-hover:top-0 transition-all duration-300 ease-in-out z-0"></span>
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="relative overflow-hidden px-4 py-2 text-sm font-medium text-teal-600 bg-white rounded group border border-teal-200"
+              >
+                <span className="relative z-10">Login</span>
+                <span className="absolute inset-0 bg-teal-50 top-full group-hover:top-0 transition-all duration-300 ease-in-out z-0"></span>
+              </Link>
+            )}
           </nav>
 
           {/* Hamburger Menu for Mobile */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
-              <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg
+                className="w-6 h-6 text-teal-600"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
                 {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
@@ -314,28 +373,70 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-white px-4 pt-2 pb-4 shadow-md">
-          <Link to="/" className="block py-2 text-gray-700 hover:text-teal-600">Home</Link>
-          <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-600">Login</Link>
-          <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-600">Register</Link>
+          <Link to="/" className="block py-2 text-gray-700 hover:text-teal-600">
+            Home
+          </Link>
+          <Link
+            to="/login"
+            className="block py-2 text-gray-700 hover:text-teal-600"
+          >
+            Login
+          </Link>
+          {/* <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-600">Register</Link> */}
 
           {/* Genres Toggle */}
           <div>
-            <button onClick={() => setIsOpenGenres(!isOpenGenres)} className="block py-2 text-gray-700 hover:text-teal-600 w-full text-left">
+            <button
+              onClick={() => setIsOpenGenres(!isOpenGenres)}
+              className="block py-2 text-gray-700 hover:text-teal-600 w-full text-left"
+            >
               Genres
             </button>
             {isOpenGenres && (
               <div className="pl-4">
-                <Link to="/category/entertainment" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Entertainment</Link>
-                <Link to="/category/lifestyle" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Lifestyle</Link>
-                <Link to="/category/technology" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Technology</Link>
-                <Link to="/category/travel" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Travel</Link>
-                <Link to="/category/health" className="block py-1 text-sm text-gray-600 hover:text-teal-600">Health</Link>
+                <Link
+                  to="/category/entertainment"
+                  className="block py-1 text-sm text-gray-600 hover:text-teal-600"
+                >
+                  Entertainment
+                </Link>
+                <Link
+                  to="/category/lifestyle"
+                  className="block py-1 text-sm text-gray-600 hover:text-teal-600"
+                >
+                  Lifestyle
+                </Link>
+                <Link
+                  to="/category/technology"
+                  className="block py-1 text-sm text-gray-600 hover:text-teal-600"
+                >
+                  Technology
+                </Link>
+                <Link
+                  to="/category/travel"
+                  className="block py-1 text-sm text-gray-600 hover:text-teal-600"
+                >
+                  Travel
+                </Link>
+                <Link
+                  to="/category/health"
+                  className="block py-1 text-sm text-gray-600 hover:text-teal-600"
+                >
+                  Health
+                </Link>
               </div>
             )}
           </div>
 
-          <Link to="/profile" className="block py-2 text-gray-700 hover:text-teal-600">{currentUser?.username}</Link>
-          <button className="w-full text-left mt-2 px-4 py-2 text-sm text-teal-600 border border-teal-200 rounded bg-white">Logout</button>
+          <Link
+            to="/profile"
+            className="block py-2 text-gray-700 hover:text-teal-600"
+          >
+            {currentUser?.username}
+          </Link>
+          <button className="w-full text-left mt-2 px-4 py-2 text-sm text-teal-600 border border-teal-200 rounded bg-white">
+            Logout
+          </button>
         </div>
       )}
     </header>

@@ -1,27 +1,9 @@
+// client\src\pages\Single.jsx
+
 import React from "react";
 import { Pencil, Trash2, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-
-// const Single = () => {
-//   return (
-//     <div>
-//       <h1 className='text-3xl font-bold'>Single Post</h1>
-//       <div className='flex flex-col md:flex-row items-center gap-6 sm:gap-10'>
-//         <div className='hidden md:block md:w-1/2 overflow-hidden rounded-3xl shadow-lg'>
-//           <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0" alt="Post" className='w-full h-64 md:h-80 object-cover transition-transform duration-300 hover:scale-105' />
-//         </div>
-//         <div className='w-full md:w-1/2 bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-md relative transition-all hover:shadow-lg'>
-//           <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-3'>Post Title</h2>
-//           <p className='text-gray-600 text-sm sm:text-base leading-relaxed mb-5'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
-//           <button className='text-sm sm:text-base font-medium text-white bg-[#3fcd9d] px-5 py-2 rounded-full hover:bg-[#2bbd8e] transition-all duration-200 shadow-sm'>Read More</button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Single
 
 const Single = () => {
   return (

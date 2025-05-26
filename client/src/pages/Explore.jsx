@@ -1,8 +1,5 @@
 // client\src\pages\Explore.jsx
 
-// import { posts } from "../data/posts";
-// client\src\pages\Explore.jsx
-
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2, Calendar } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
@@ -20,7 +17,9 @@ const Explore = () => {
         setLoading(true);
         setError(null);
         
-        const res =  await axios.get(`/posts`); // This will call getAllPost
+        const res = category
+          ? await axios.get(`/posts/category/${category}`)
+          : await axios.get(`/posts`); // This will call getAllPost
         
         setPosts(res.data);
         console.log("Fetched posts:", res.data); // Debug log
@@ -113,8 +112,10 @@ const Explore = () => {
                 <Calendar className="w-4 h-4 text-gray-400" />
                 <span>Posted on {post.date || post.created_at}</span>
               </div>
-              <Link to={`/post/${post.id}`}
-               state={{ post: post }}>
+              <Link 
+                to={`/post/${post.id}`}
+                state={{ post }} // Pass the entire post object
+              >
                 <button className="text-sm sm:text-base font-medium text-white bg-[#3fcd9d] px-5 py-2 rounded-full hover:bg-[#2bbd8e] transition-all duration-200 shadow-sm">
                   Read More
                 </button>
