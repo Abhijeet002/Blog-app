@@ -55,9 +55,9 @@ const CategoryPage = () => {
         setLoading(true);
         setError(null);
         
-        const res = category
-          ? await axios.get(`/posts/category/${category}`)
-          : await axios.get(`/posts`); // This will call getAllPost
+        const res = 
+           await axios.get(`/posts/category/${category}`)
+          // : await axios.get(`/posts`); // This will call getAllPost
         
         setPosts(res.data);
         console.log("Fetched posts:", res.data); // Debug log
