@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "./authContext";
-import { Navigate } from "react-router-dom";
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
@@ -16,6 +15,7 @@ export const AuthContextProvider = ({ children }) => {
         withCredentials: true,
       });
       setCurrentUser(res.data);
+      return res.data; // Return user data for success handling
     } catch (err) {
       console.error("Login failed:", err);
       throw err;
@@ -26,14 +26,22 @@ export const AuthContextProvider = ({ children }) => {
     try {
       await axios.post("/auth/logout", {}, { withCredentials: true });
       setCurrentUser(null);
-      Navigate("/login")
+      localStorage.removeItem("user");
     } catch (err) {
       console.error("Logout failed:", err);
+      // Even if server logout fails, clear local state
+      setCurrentUser(null);
+      localStorage.removeItem("user");
+      throw err;
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("user"); // Clear when user is null
+    }
   }, [currentUser]);
 
   return (
