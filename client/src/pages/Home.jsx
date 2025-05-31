@@ -225,7 +225,7 @@ const Home = () => {
       </Link>
 
       {/* Custom Styles */}
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
