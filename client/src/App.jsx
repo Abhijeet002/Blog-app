@@ -11,10 +11,12 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Explore from "./pages/Explore";
 import CategoryPage from "./pages/CategoryPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Layout = () => {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <Outlet />
       <Footer />
@@ -44,7 +46,7 @@ const router = createBrowserRouter([
         element: <Explore />,
       },
       {
-        path :"category/:category",
+        path: "category/:category",
         element: <CategoryPage />,
       },
       {
@@ -67,7 +69,7 @@ const App = () => {
   return (
     <div className="app">
       <div className="container">
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </div>
     </div>
   );
