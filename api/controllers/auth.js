@@ -4,23 +4,23 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+const jwt_secret_key = process.env.JWT_SECRET;
 
-const jwt_secret_key = process.env.JWT_SECRET
 export const register = async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
-    //  Check for existing user
+    // Check for existing user
     const checkQuery = "SELECT * FROM users WHERE email = $1 OR username = $2";
     const checkResult = await db.query(checkQuery, [email, username]);
     if (checkResult.rows.length) {
       return res.status(409).json("User already exists!");
     }
 
-    //  Hash the password
+    // Hash the password
     const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-    //  Insert the new user
+    // Insert the new user
     const insertQuery =
       "INSERT INTO users (username,email,password) VALUES ($1,$2,$3)";
     await db.query(insertQuery, [username, email, hash]);
@@ -33,32 +33,35 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  // res.json({ message: "User logged in successfully" });
   try {
     const { email, password } = req.body;
 
-    //  Check for existing user
+    // Check for existing user
     const checkUserQuery = "SELECT * FROM users WHERE email = $1";
     const checkResult = await db.query(checkUserQuery, [email]);
     if (checkResult.rows.length === 0) {
       return res.status(401).json("Invalid email or password");
     }
+    
     const hashedPassword = checkResult.rows[0].password;
     const user = checkResult.rows[0];
-    // check password
+    
+    // Check password
     const isMatch = await bcrypt.compare(password, hashedPassword);
     if (!isMatch) {
       return res.status(401).json("Invalid email or password");
     }
 
-    //  create and send token/session here
+    // Create and send token/session
     const token = jwt.sign({ id: user.id }, jwt_secret_key, { expiresIn: "1h" });
     const { password: removed_Password, ...otherData } = checkResult.rows[0];
+    
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        sameSite: "Strict", // important for CSRF protection
-        secure: process.env.NODE_ENV === "production", // send cookie only over HTTPS in production
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Fixed: Consistent sameSite
+        secure: process.env.NODE_ENV === "production", // Send cookie only over HTTPS in production
+        maxAge: 3600000, // 1 hour in milliseconds
       })
       .status(200)
       .json(otherData);
@@ -68,13 +71,18 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async() => {
+export const logout = (req, res) => {
   try {
-      await axios.post("/auth/logout", {}, { withCredentials: true });
-      setCurrentUser(null);
-      localStorage.removeItem("user"); // clear user data
-      navigate("/login"); // redirect user to login page
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
+    res
+      .clearCookie("access_token", {
+        httpOnly: true, // Added: Match the cookie settings from login
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Fixed: Consistent sameSite
+        secure: process.env.NODE_ENV === "production", // Match login settings
+      })
+      .status(200)
+      .json("User logged out successfully");
+  } catch (err) {
+    console.error("Logout error", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };
