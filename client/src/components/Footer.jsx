@@ -21,10 +21,12 @@ const Footer = () => {
   ];
 
   const categories = [
-    { name: 'Technology', href: '/explore/technology' },
-    { name: 'Travel', href: '/explore/travel' },
-    { name: 'Food', href: '/explore/food' },
-    { name: 'Lifestyle', href: '/explore/lifestyle' }
+    { name: 'Entertainment', href: '/category/entertainment' },
+    { name: 'Technology', href: '/category/technology' },
+    { name: 'Travel', href: '/category/travel' },
+    { name: 'Food', href: '/category/food' },
+    { name: 'Lifestyle', href: '/category/lifestyle' },
+    { name: 'Health', href: '/category/health' }
   ];
 
   const legalLinks = [
