@@ -1,30 +1,89 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contextProvider/authContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenGenres, setIsOpenGenres] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [visible, setVisible] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const location = useLocation();
-  const searchRef = useRef(null);
+  const navigate = useNavigate();
+  const lastScrollY = useRef(0);
+  const scrollDirection = useRef('up');
+  const navbarRef = useRef(null);
 
   const { currentUser, logout } = useContext(AuthContext);
 
-  // Handle scroll effect with velocity-based opacity
+  // Enhanced logout function with smooth redirection
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      
+      // Close all menus
+      setIsOpen(false);
+      setIsOpenGenres(false);
+      
+      // Apply fade-out effect to the whole page
+      document.documentElement.classList.add('fade-out');
+      
+      // Wait for animation to complete (500ms matches CSS animation)
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Call logout function
+      await logout();
+      
+      // Smooth redirect to home page
+      navigate('/', { 
+        replace: true,
+        state: { from: location.pathname }
+      });
+      
+    } catch (error) {
+      console.error('Logout error:', error);
+      document.documentElement.classList.remove('fade-out');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  // Enhanced scroll effect with navbar hide/show functionality
   useEffect(() => {
     let ticking = false;
+    
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          const offset = window.scrollY;
-          // const velocity = offset / window.innerHeight;
-          setScrolled(offset > 10);
+          const currentScrollY = window.scrollY;
+          const scrollThreshold = 10;
+          const hideThreshold = 100;
+          
+          // Determine scroll direction
+          const direction = currentScrollY > lastScrollY.current ? 'down' : 'up';
+          scrollDirection.current = direction;
+          
+          // Set scrolled state for styling
+          setScrolled(currentScrollY > scrollThreshold);
+          
+          // Handle navbar visibility
+          if (currentScrollY <= scrollThreshold) {
+            // Always show navbar at the top
+            setVisible(true);
+          } else if (direction === 'down' && currentScrollY > hideThreshold) {
+            // Hide navbar when scrolling down past threshold
+            setVisible(false);
+            // Close mobile menu when hiding
+            setIsOpen(false);
+          } else if (direction === 'up') {
+            // Show navbar when scrolling up
+            setVisible(true);
+          }
+          
+          lastScrollY.current = currentScrollY;
           ticking = false;
         });
         ticking = true;
@@ -39,6 +98,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
+      
     };
 
     if (isHovering) {
@@ -51,9 +111,6 @@ const Navbar = () => {
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchOpen(false);
-      }
       if (isOpen && !event.target.closest('.mobile-menu') && !event.target.closest('.hamburger-btn')) {
         setIsOpen(false);
         setIsOpenGenres(false);
@@ -64,22 +121,24 @@ const Navbar = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isOpen]);
 
+  // Add navbar height as padding to body to prevent content overlap
+  useEffect(() => {
+    if (navbarRef.current) {
+      const navbarHeight = navbarRef.current.offsetHeight;
+      document.body.style.paddingTop = `${navbarHeight}px`;
+    }
+
+    return () => {
+      document.body.style.paddingTop = '';
+    };
+  }, [isOpen, visible]);
+
   const isActiveLink = (path) => {
     return location.pathname === path;
   };
 
   const isCategoryActive = (category) => {
     return location.pathname === `/category/${category}`;
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Handle search functionality here
-      console.log("Searching for:", searchQuery);
-      setSearchOpen(false);
-      setSearchQuery("");
-    }
   };
 
   const genres = [
@@ -96,7 +155,10 @@ const Navbar = () => {
       <div className="fixed inset-0 bg-gradient-to-br from-teal-50/20 via-transparent to-cyan-50/20 pointer-events-none z-0" />
       
       <header 
-        className={`fixed w-full top-0 z-50 transition-all duration-500 ease-out ${
+        ref={navbarRef}
+        className={`fixed w-full top-0 z-50 transition-all duration-500 ease-out transform ${
+          visible ? 'translate-y-0' : '-translate-y-full'
+        } ${
           scrolled 
             ? "bg-white/80 backdrop-blur-xl shadow-2xl border-b border-white/20" 
             : "bg-white/95 backdrop-blur-md shadow-lg"
@@ -117,12 +179,12 @@ const Navbar = () => {
               >
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl shadow-lg flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-white font-bold text-lg">M</span>
+                    <span className="text-white font-bold text-lg">E</span>
                   </div>
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full animate-pulse" />
                 </div>
                 <span className="tracking-tight">
-                  MyBlog
+                  Echoes & Edits
                   <span className="text-teal-400 animate-pulse">.</span>
                 </span>
               </Link>
@@ -130,37 +192,11 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-2">
-              {/* Search Bar */}
-              <div className="relative mr-4" ref={searchRef}>
-                <div className={`flex items-center transition-all duration-300 ${searchOpen ? 'w-64' : 'w-10'}`}>
-                  <button
-                    onClick={() => setSearchOpen(!searchOpen)}
-                    className="p-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-all duration-200"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </button>
-                  {searchOpen && (
-                    <form onSubmit={handleSearch} className="flex-1 ml-2">
-                      <input
-                        type="text"
-                        placeholder="Search articles..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
-                        autoFocus
-                      />
-                    </form>
-                  )}
-                </div>
-              </div>
-
               {/* Navigation Links */}
               <Link 
-                to="/" 
+                to="/explore" 
                 className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 overflow-hidden group ${
-                  isActiveLink('/') 
+                  isActiveLink('/explore') 
                     ? 'text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-lg' 
                     : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50/70'
                 }`}
@@ -169,9 +205,9 @@ const Navbar = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  Home
+                  Explore
                 </span>
-                {!isActiveLink('/') && (
+                {!isActiveLink('/explore') && (
                   <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
                 )}
               </Link>
@@ -240,16 +276,34 @@ const Navbar = () => {
               <div className="flex items-center gap-3 ml-6 pl-6 border-l border-gray-200/50">
                 {currentUser ? (
                   <button
-                    onClick={logout}
-                    className="relative overflow-hidden px-6 py-2.5 text-sm font-medium text-teal-600 bg-white/80 backdrop-blur-sm rounded-xl border border-teal-200/50 hover:border-teal-300 transition-all duration-300 group shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className={`relative overflow-hidden px-6 py-2.5 text-sm font-medium transition-all duration-300 group shadow-lg hover:shadow-xl hover:-translate-y-0.5 rounded-xl border ${
+                      isLoggingOut 
+                        ? 'text-gray-400 bg-gray-100 border-gray-200 cursor-not-allowed' 
+                        : 'text-teal-600 bg-white/80 backdrop-blur-sm border-teal-200/50 hover:border-teal-300'
+                    }`}
                   >
                     <span className="relative z-10 flex items-center gap-2">
-                      <svg className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                      </svg>
-                      Logout
+                      {isLoggingOut ? (
+                        <>
+                          <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                          Logging out...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                          Logout
+                        </>
+                      )}
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-teal-50 to-cyan-50 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                    {!isLoggingOut && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-teal-50 to-cyan-50 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                    )}
                   </button>
                 ) : (
                   <Link
@@ -293,22 +347,6 @@ const Navbar = () => {
           }`}
         >
           <div className="px-4 py-6 space-y-2">
-            {/* Mobile Search */}
-            <div className="mb-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 pl-10 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
-                />
-                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-            </div>
-
             <Link 
               to="/" 
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
@@ -389,16 +427,29 @@ const Navbar = () => {
             <div className="pt-4 border-t border-gray-100 mt-4">
               {currentUser ? (
                 <button 
-                  onClick={() => {
-                    logout();
-                    setIsOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 text-teal-600 bg-teal-50 hover:bg-teal-100 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className={`w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl ${
+                    isLoggingOut 
+                      ? 'text-gray-400 bg-gray-100 cursor-not-allowed' 
+                      : 'text-teal-600 bg-teal-50 hover:bg-teal-100'
+                  }`}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  Logout
+                  {isLoggingOut ? (
+                    <>
+                      <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Logging out...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </>
+                  )}
                 </button>
               ) : (
                 <Link
@@ -416,9 +467,6 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-
-      {/* Spacer to prevent content from being hidden behind fixed navbar */}
-      <div className="h-20" />
     </>
   );
 };
