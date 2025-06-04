@@ -173,7 +173,7 @@ const Statsbar = () => {
   // Stats Content Component
   const StatsContent = () => {
     const categories = [...new Set(posts.map((p) => p.category).filter(Boolean))];
-    const authors = [...new Set(posts.map((p) => p.author || p.username).filter(Boolean))];
+    const authors = [...new Set(posts.map((p) => p.author_email || p.username).filter(Boolean))];
 
     return (
       <>
