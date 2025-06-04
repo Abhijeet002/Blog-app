@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+// client/src/components/TextEditor.jsx
+
+import React, { useRef, useState, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 
 const TextEditor = ({ initialData = {}, onChange }) => {
@@ -12,6 +14,13 @@ const TextEditor = ({ initialData = {}, onChange }) => {
     title: false,
     category: false,
   });
+
+  // Update state when initialData changes (for edit mode)
+  useEffect(() => {
+    setTitle(initialData.title || '');
+    setCategory(initialData.category || '');
+    setContent(initialData.content || '');
+  }, [initialData.title, initialData.category, initialData.content]);
 
   const config = {
     readonly: false,
@@ -92,10 +101,11 @@ const TextEditor = ({ initialData = {}, onChange }) => {
           }`}
         >
           <option value="">Select category</option>
-          <option value="tech">Tech</option>
+          <option value="technology">Technology</option>
           <option value="lifestyle">Lifestyle</option>
           <option value="travel">Travel</option>
           <option value="art">Art</option>
+          <option value="health">Health</option>
         </select>
         {errors.category && (
           <p className="text-red-500 text-sm mt-1">Category is required.</p>
