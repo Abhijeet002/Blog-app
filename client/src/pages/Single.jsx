@@ -440,7 +440,7 @@ const Single = () => {
                   {currentUser && currentUser.username === post.author_username && (
                     <>
                       <Link 
-                        to={`/write?edit=${post.id}`}
+                        to={`/write?edit=${post.id}`} state={post}
                         className="p-4 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl hover:bg-white hover:shadow-3xl transition-all duration-300 group/btn transform hover:scale-110 border border-white/20"
                         title="Edit post"
                       >
