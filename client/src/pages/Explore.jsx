@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  Pencil,
-  Trash2,
   Calendar,
   Clock,
   User,
-  Eye,
   BookOpen,
   TrendingUp,
   Filter,
@@ -13,10 +10,10 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-// import { useContext } from "react";
 import { AuthContext } from "../contextProvider/authContext";
 import Statsbar from "../components/Statsbar";
 import moment from "moment";
+import AuthPromptModal from "../components/AuthPromptModal";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
@@ -25,7 +22,8 @@ const Explore = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("latest");
   const { category } = useParams();
-  // const { currentUser } = useContext(AuthContext);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(true);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -219,6 +217,12 @@ const Explore = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Enhanced Header */}
+      {!currentUser && (
+        <AuthPromptModal
+          isOpen={showAuthPrompt}
+          onClose={() => setShowAuthPrompt(false)}
+        />
+      )}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-8 md:py-12">
@@ -305,7 +309,10 @@ const Explore = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative overflow-hidden">
                       <img
-                        src={featuredPost.img || "/default-blog-image.jpg"}
+                        src={
+                          // featuredPost?.img ||
+                          `/uploads/${featuredPost.img}`
+                        }
                         alt={featuredPost.title}
                         className="w-full h-64 md:h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -323,7 +330,22 @@ const Explore = () => {
                       </h2>
 
                       <p className="text-slate-600 mb-6 line-clamp-3 text-lg leading-relaxed">
-                        {featuredPost.description || featuredPost.content}
+                        {featuredPost.content ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: featuredPost.content,
+                            }}
+                          />
+                        ) : (
+                          <p
+                            className="text-xl leading-relaxed text-gray-700"
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                featuredPost.description ||
+                                "No content available",
+                            }}
+                          />
+                        )}
                       </p>
 
                       <div className="flex items-center justify-between">
@@ -340,10 +362,6 @@ const Explore = () => {
                               {featuredPost.author || featuredPost.username}
                             </p>
                             <div className="flex items-center gap-2 text-sm text-slate-500">
-                              {/* <Calendar className="w-3 h-3" />
-                              <span>
-                                {moment(featuredPost.date).fromNow()}
-                              </span> */}
                               <Clock className="w-3 h-3 ml-2" />
                               <span>8 min read</span>
                             </div>
@@ -372,7 +390,7 @@ const Explore = () => {
                   >
                     <div className="relative overflow-hidden">
                       <img
-                        src={post.img || "/default-blog-image.jpg"}
+                        src={`/uploads/${post.img}`}
                         alt={post.title}
                         className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -390,7 +408,19 @@ const Explore = () => {
                       </h3>
 
                       <p className="text-slate-600 mb-4 line-clamp-2">
-                        {post.description || post.content}
+                        {post.content ? (
+                          <div
+                            dangerouslySetInnerHTML={{ __html: post.content }}
+                          />
+                        ) : (
+                          <p
+                            className="text-xl leading-relaxed text-gray-700"
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                post.description || "No content available",
+                            }}
+                          />
+                        )}
                       </p>
 
                       <div className="flex items-center justify-between">
@@ -404,12 +434,10 @@ const Explore = () => {
                             <p className="text-sm font-medium text-slate-700">
                               {post.author || post.username}
                             </p>
-                            
+
                             <div className="flex items-center gap-2 text-sm text-slate-500">
                               <Calendar className="w-3 h-3" />
-                              <span>
-                                {moment(post.date).fromNow()}
-                              </span>
+                              <span>{moment(post.date).fromNow()}</span>
                             </div>
                           </div>
                         </div>
@@ -441,8 +469,7 @@ const Explore = () => {
           </div>
 
           {/* Sidebar */}
-          <Statsbar/>
-          
+          <Statsbar />
         </div>
       </div>
 
