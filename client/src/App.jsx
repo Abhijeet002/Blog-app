@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import Explore from "./pages/Explore";
 import CategoryPage from "./pages/CategoryPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Profile from "./pages/Profile";
 
 const Layout = () => {
   return (
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "profile/",
+        element: <Profile />,
       },
       {
         path: "post/:id",
