@@ -7,6 +7,7 @@ import moment from "moment"
 import Sidebar from "../components/Sidebar";
 import { useContext } from "react";
 import { AuthContext } from "../contextProvider/authContext";
+import BackButton from "../components/BackButton";
 
 // Enhanced Delete Confirmation Dialog Component with glassmorphism
 const DeleteConfirmDialog = ({ isOpen, onClose, onConfirm, postTitle, isDeleting }) => {
@@ -105,7 +106,9 @@ const Toast = ({ message, type, isVisible, onClose }) => {
   };
 
   return (
+    
     <div className={`fixed top-8 right-8 ${styles[type]} text-white px-8 py-5 rounded-2xl z-50 animate-in slide-in-from-top duration-500 backdrop-blur-xl border border-white/20 max-w-md`}>
+    
       <div className="flex items-center gap-4">
         <span className="font-semibold text-lg flex-1">{message}</span>
         <button 
@@ -396,20 +399,22 @@ const Single = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Background decoration */}
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-1/2 -left-20 w-60 h-60 bg-gradient-to-br from-green-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
       </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 py-12">
+      <BackButton fallbackPath="/explore" />
+      <div className="relative max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left: Post Content */}
           <div className="lg:col-span-8">
             <article className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-500 border border-white/20 group">
               {/* Hero Image */}
+              {/* <BackButton  text="Back to Explore" fallbackPath="/explore" /> */}
               <div className="relative overflow-hidden">
                 <img
-                  src={post.img || "https://images.unsplash.com/photo-1741648711665-e1a8003b7891"}
+                  src={`/uploads/${post.img}`}
                   alt={post.title}
                   className={`w-full h-96 object-cover transition-all duration-1000 group-hover:scale-105 ${imageLoaded ? 'scale-100 opacity-100' : 'scale-110 opacity-0'}`}
                   onLoad={() => setImageLoaded(true)}
@@ -534,7 +539,7 @@ const Single = () => {
                   {post.content ? (
                     <div dangerouslySetInnerHTML={{ __html: post.content }} />
                   ) : (
-                    <p className="text-xl leading-relaxed text-gray-700">{post.description || "No content available"}</p>
+                    <p className="text-xl leading-relaxed text-gray-700" dangerouslySetInnerHTML={{ __html: post.description|| "No content available" }} />
                   )}
                 </div>
               </div>
