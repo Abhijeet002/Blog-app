@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, PenTool, BookOpen, Users, Star, TrendingUp, Heart, MessageCircle } from 'lucide-react';
+import WriteButton from '../components/WriteButton';
+import AuthPromptModal from '../components/AuthPromptModal'; // Added import
+import { AuthContext } from '../contextProvider/authContext';
 
 const Home = () => {
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false); // Changed to false
+  const { currentUser } = useContext(AuthContext);
+  
+  // Function to handle restricted actions
+  const handleRestrictedAction = (e) => {
+    if (!currentUser) {
+      e.preventDefault(); // Prevent default link behavior
+      setShowAuthPrompt(true);
+      return false;
+    }
+    return true;
+  };
+
   const features = [
     {
       icon: <PenTool className="w-8 h-8" />,
@@ -33,6 +49,14 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f9fa] via-[#f1f3f4] to-[#e8f5e8] text-[#0b0c0b] font-body overflow-x-hidden">
+      {/* Auth Modal - Added this */}
+      {!currentUser && (
+        <AuthPromptModal
+          isOpen={showAuthPrompt}
+          onClose={() => setShowAuthPrompt(false)}
+        />
+      )}
+
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center text-center py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
         {/* Background Elements */}
@@ -78,6 +102,7 @@ const Home = () => {
             
             <Link
               to="/write"
+              onClick={handleRestrictedAction}
               className="group bg-white/80 backdrop-blur-sm hover:bg-white text-gray-800 font-semibold py-4 px-8 rounded-full transition-all duration-300 border border-gray-200 hover:border-[#3fcd9d] shadow-md hover:shadow-lg transform hover:-translate-y-1"
             >
               <span className="flex items-center gap-2">
@@ -204,25 +229,7 @@ const Home = () => {
       </section>
 
       {/* Floating Create Button */}
-      <Link
-        to="/write"
-        className="fixed bottom-8 right-8 bg-gradient-to-r from-[#3fcd9d] to-[#2bbd8e] hover:from-[#2bbd8e] hover:to-[#239d73] text-white rounded-full p-4 shadow-lg hover:shadow-xl hover:shadow-[#3fcd9d]/25 transition-all duration-300 group z-50 transform hover:scale-110"
-        title="Write a new blog"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        
-        {/* Pulse Animation */}
-        <div className="absolute inset-0 rounded-full bg-[#3fcd9d] animate-ping opacity-20"></div>
-      </Link>
+      <WriteButton />
 
       {/* Custom Styles */}
       <style jsx="true">{`
