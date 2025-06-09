@@ -2,7 +2,7 @@
 
 A feature-rich, full-stack blog platform where users can create, explore, and manage blog posts with beautiful UI and secure backend services.
 
-> 🚀 **Live Demo**: [https://your-deployed-url.com](https://your-deployed-url.com)  
+<!-- > 🚀 **Live Demo**: [https://your-deployed-url.com](https://your-deployed-url.com)   -->
 > 📂 **Frontend**: React + Vite + Tailwind CSS  
 > 🔧 **Backend**: Node.js + Express.js + PostgreSQL   
 > 👤 **Author**: Abhijeet
