@@ -59,7 +59,7 @@ export const login = async (req, res) => {
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Fixed: Consistent sameSite
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", 
         secure: process.env.NODE_ENV === "production", // Send cookie only over HTTPS in production
         maxAge: 3600000, // 1 hour in milliseconds
       })
@@ -75,8 +75,8 @@ export const logout = (req, res) => {
   try {
     res
       .clearCookie("access_token", {
-        httpOnly: true, // Added: Match the cookie settings from login
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Fixed: Consistent sameSite
+        httpOnly: true, // : Match the cookie settings from login
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", 
         secure: process.env.NODE_ENV === "production", // Match login settings
       })
       .status(200)
