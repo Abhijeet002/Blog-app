@@ -14,16 +14,13 @@ const cleanContent = (content) => {
     .replace(/<p\s*><\/p>/g, "")
     .trim();
 
-  cleaned = cleaned.replace(/<img[^>]*>/g, '');
+  cleaned = cleaned.replace(/<img[^>]*>/g, "");
+
+  cleaned = cleaned.replace(/\s+/g, " ").replace(/>\s+</g, "><").trim();
 
   cleaned = cleaned
-    .replace(/\s+/g, " ")
-    .replace(/>\s+</g, "><")
-    .trim();
-
-  cleaned = cleaned
-    .replace(/^(\s*<p>\s*<\/p>\s*)+/, '')
-    .replace(/(\s*<p>\s*<\/p>\s*)+$/, '')
+    .replace(/^(\s*<p>\s*<\/p>\s*)+/, "")
+    .replace(/(\s*<p>\s*<\/p>\s*)+$/, "")
     .trim();
 
   return cleaned;
@@ -43,39 +40,70 @@ const Toast = ({ message, type, isVisible, onClose }) => {
   if (!isVisible) return null;
 
   const getToastStyles = () => {
-    const baseStyles = "fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white rounded-lg shadow-lg border border-slate-200 p-4 transform transition-all duration-300 ease-in-out";
-    
-    if (type === 'success') {
+    const baseStyles =
+      "fixed bottom-6 right-6 z-50 max-w-sm w-full bg-white rounded-lg shadow-lg border border-slate-200 p-4 transform transition-all duration-300 ease-in-out";
+
+    if (type === "success") {
       return `${baseStyles} border-l-4 border-l-green-500`;
-    } else if (type === 'error') {
+    } else if (type === "error") {
       return `${baseStyles} border-l-4 border-l-red-500`;
     }
     return `${baseStyles} border-l-4 border-l-blue-500`;
   };
 
   const getIconColor = () => {
-    if (type === 'success') return 'text-green-500';
-    if (type === 'error') return 'text-red-500';
-    return 'text-blue-500';
+    if (type === "success") return "text-green-500";
+    if (type === "error") return "text-red-500";
+    return "text-blue-500";
   };
 
   const getIcon = () => {
-    if (type === 'success') {
+    if (type === "success") {
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
         </svg>
       );
-    } else if (type === 'error') {
+    } else if (type === "error") {
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       );
     }
     return (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     );
   };
@@ -83,9 +111,7 @@ const Toast = ({ message, type, isVisible, onClose }) => {
   return (
     <div className={getToastStyles()}>
       <div className="flex items-start">
-        <div className={`${getIconColor()} mr-3 mt-0.5`}>
-          {getIcon()}
-        </div>
+        <div className={`${getIconColor()} mr-3 mt-0.5`}>{getIcon()}</div>
         <div className="flex-1">
           <p className="text-sm font-medium text-slate-900">{message}</p>
         </div>
@@ -93,8 +119,18 @@ const Toast = ({ message, type, isVisible, onClose }) => {
           onClick={onClose}
           className="ml-3 text-slate-400 hover:text-slate-600 transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -127,21 +163,21 @@ const Write = () => {
 
   // Toast notification state
   const [toast, setToast] = useState({
-    message: '',
-    type: 'info',
-    isVisible: false
+    message: "",
+    type: "info",
+    isVisible: false,
   });
 
-  const showToast = (message, type = 'info') => {
+  const showToast = (message, type = "info") => {
     setToast({
       message,
       type,
-      isVisible: true
+      isVisible: true,
     });
   };
 
   const hideToast = () => {
-    setToast(prev => ({ ...prev, isVisible: false }));
+    setToast((prev) => ({ ...prev, isVisible: false }));
   };
 
   useEffect(() => {
@@ -203,7 +239,7 @@ const Write = () => {
     const hasTitle = postData.title.trim().length > 0;
     const hasCategory = postData.category.trim().length > 0;
     const hasContent = postData.content.trim().length > 0;
-    
+
     return hasTitle && hasCategory && hasContent;
   };
 
@@ -223,6 +259,17 @@ const Write = () => {
 
       if (postData.image && postData.image.startsWith("data:image/")) {
         const imageFile = base64ToFile(postData.image, "uploaded_image.jpg");
+
+        if (imageFile.size > 5 * 1024 * 1024) {
+          // 5MB limit
+          showToast(
+            "Image is too large. Please upload an image smaller than 5MB.",
+            "error"
+          );
+          setIsSubmitting(false); // reset submitting state
+          return; // cancel the submission
+        }
+
         const formData = new FormData();
         formData.append("file", imageFile);
 
@@ -247,20 +294,19 @@ const Write = () => {
         category: postData.category,
         description: cleanedContent,
         img: uploadedFilename || postData.image,
-        status: saveAsDraft ? 'draft' : 'published'
+        status: saveAsDraft ? "draft" : "published",
       };
 
       if (isEditing) {
-         await axios.put(
-          `http://localhost:5000/posts/${editId}`,
-          submitData,
-          {
-            withCredentials: true,
-          }
+        await axios.put(`http://localhost:5000/posts/${editId}`, submitData, {
+          withCredentials: true,
+        });
+
+        showToast(
+          `Post ${saveAsDraft ? "saved as draft" : "updated"} successfully!`,
+          "success"
         );
 
-        showToast(`Post ${saveAsDraft ? 'saved as draft' : 'updated'} successfully!`, "success");
-        
         // Navigate after a short delay to let user see the toast
         setTimeout(() => {
           navigate(`/post/${editId}`);
@@ -273,9 +319,12 @@ const Write = () => {
             withCredentials: true,
           }
         );
-        
-        showToast(`Post ${saveAsDraft ? 'saved as draft' : 'published'} successfully!`, "success");
-        
+
+        showToast(
+          `Post ${saveAsDraft ? "saved as draft" : "published"} successfully!`,
+          "success"
+        );
+
         // Navigate after a short delay to let user see the toast
         setTimeout(() => {
           navigate(`/post/${response.data.post.id}`);
@@ -285,10 +334,16 @@ const Write = () => {
       console.error("Error submitting post:", err);
 
       if (err.response) {
-        const errorMessage = err.response.data?.error || err.response.data?.message || "Unknown error occurred";
+        const errorMessage =
+          err.response.data?.error ||
+          err.response.data?.message ||
+          "Unknown error occurred";
         showToast(`Error: ${errorMessage}`, "error");
       } else if (err.request) {
-        showToast("Network error. Please check your connection and ensure the backend server is running on port 5000.", "error");
+        showToast(
+          "Network error. Please check your connection and ensure the backend server is running on port 5000.",
+          "error"
+        );
       } else {
         showToast("Error submitting post. Please try again.", "error");
       }
@@ -319,8 +374,18 @@ const Write = () => {
                 onClick={() => navigate(-1)}
                 className="flex items-center space-x-2 text-slate-600 hover:text-slate-900 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
                 <span className="font-medium">Back</span>
               </button>
@@ -329,7 +394,7 @@ const Write = () => {
                 {isEditing ? "Edit Post" : "Create New Post"}
               </h1>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setShowPreview(!showPreview)}
@@ -380,7 +445,9 @@ const Write = () => {
           <div className="space-y-6">
             {/* Post Status */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">Post Status</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                Post Status
+              </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600">Status:</span>
@@ -391,13 +458,18 @@ const Write = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600">Word Count:</span>
                   <span className="text-sm font-medium text-slate-900">
-                    {postData.content.replace(/<[^>]*>/g, '').split(' ').filter(word => word.length > 0).length}
+                    {
+                      postData.content
+                        .replace(/<[^>]*>/g, "")
+                        .split(" ")
+                        .filter((word) => word.length > 0).length
+                    }
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600">Characters:</span>
                   <span className="text-sm font-medium text-slate-900">
-                    {postData.content.replace(/<[^>]*>/g, '').length}
+                    {postData.content.replace(/<[^>]*>/g, "").length}
                   </span>
                 </div>
               </div>
@@ -406,7 +478,9 @@ const Write = () => {
             {/* Image Preview */}
             {postData.image && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Featured Image</h3>
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                  Featured Image
+                </h3>
                 <div className="aspect-video bg-slate-100 rounded-lg overflow-hidden">
                   <img
                     src={postData.image}
@@ -422,7 +496,9 @@ const Write = () => {
 
             {/* SEO Preview */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">SEO Preview</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                SEO Preview
+              </h3>
               <div className="space-y-2">
                 <h4 className="text-blue-600 text-sm font-medium line-clamp-1">
                   {postData.title || "Untitled Post"}
@@ -431,8 +507,10 @@ const Write = () => {
                   yoursite.com/post/{editId || "new-post"}
                 </p>
                 <p className="text-slate-600 text-sm line-clamp-2">
-                  {postData.content.replace(/<[^>]*>/g, '').substring(0, 160) || "No description available"}
-                  {postData.content.replace(/<[^>]*>/g, '').length > 160 && "..."}
+                  {postData.content.replace(/<[^>]*>/g, "").substring(0, 160) ||
+                    "No description available"}
+                  {postData.content.replace(/<[^>]*>/g, "").length > 160 &&
+                    "..."}
                 </p>
               </div>
             </div>
@@ -444,7 +522,9 @@ const Write = () => {
           <div className="mt-8">
             <div className="bg-white rounded-xl shadow-sm border border-slate-200">
               <div className="p-6 border-b border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900">Content Preview</h3>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Content Preview
+                </h3>
               </div>
               <div className="p-6">
                 <div className="prose prose-slate max-w-none">
@@ -455,7 +535,11 @@ const Write = () => {
                     </span>
                     <time>{new Date().toLocaleDateString()}</time>
                   </div>
-                  <div dangerouslySetInnerHTML={{ __html: cleanContent(postData.content) }} />
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: cleanContent(postData.content),
+                    }}
+                  />
                 </div>
               </div>
             </div>
