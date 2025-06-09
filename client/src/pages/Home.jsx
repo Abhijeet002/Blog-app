@@ -74,9 +74,9 @@ const Home = () => {
 
           {/* Main Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold mb-6 leading-tight animate-fade-in">
-            Welcome to{' '}
+            Welcome to{' '}<br></br>
             <span className="relative">
-              <span className="text-[#3fcd9d]">MyBlog</span>
+              <span className="text-[#3fcd9d]">Echoes and Edits</span>
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#3fcd9d] to-[#2bbd8e] rounded-full transform scale-x-0 animate-scale-x"></div>
             </span>
           </h1>
