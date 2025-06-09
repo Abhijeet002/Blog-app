@@ -321,7 +321,7 @@ const CategoryPage = () => {
                   </h2>
 
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {truncateText(post.description || post.content)}
+                    <span dangerouslySetInnerHTML={{ __html: truncateText(post.description || post.content) }} />
                   </p>
                 </div>
 
