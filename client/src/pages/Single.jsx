@@ -414,7 +414,7 @@ const Single = () => {
               {/* <BackButton  text="Back to Explore" fallbackPath="/explore" /> */}
               <div className="relative overflow-hidden">
                 <img
-                  src={`/uploads/${post.img}`}
+                  src={post.img}
                   alt={post.title}
                   className={`w-full h-96 object-cover transition-all duration-1000 group-hover:scale-105 ${imageLoaded ? 'scale-100 opacity-100' : 'scale-110 opacity-0'}`}
                   onLoad={() => setImageLoaded(true)}
