@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isOpenGenres, setIsOpenGenres] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -146,7 +147,12 @@ const Navbar = () => {
     { name: "Lifestyle", path: "lifestyle", icon: "🌿", color: "from-green-500 to-emerald-500" },
     { name: "Technology", path: "technology", icon: "💻", color: "from-blue-500 to-cyan-500" },
     { name: "Travel", path: "travel", icon: "✈️", color: "from-orange-500 to-red-500" },
-    { name: "Health", path: "health", icon: "🏥", color: "from-teal-500 to-cyan-500" },
+    { name: "Education", path: "education", icon: "📚", color: "from-red-500 to-amber-500" },
+    { name: "Health", path: "health", icon: "🏥", color: "from-red-500 to-pink-500" },
+    { name: "Politics", path: "politics", icon: "🗳️", color: "from-emerald-500 to-green-500" },
+    { name: "Sports", path: "sports", icon: "🏅", color: "from-blue-500 to-green-500" },
+    { name: "Food", path: "food", icon: "🍔", color: "from-yellow-500 to-orange-500" },
+    { name: "Art", path: "art", icon: "🎨", color: "from-pink-500 to-purple-500" },
   ];
 
   return (
@@ -212,7 +218,7 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {/* Enhanced Genres Dropdown */}
+              {/* Enhanced Genres Dropdown with Two Columns */}
               <div className="relative group">
                 <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-teal-600 hover:bg-teal-50/70 rounded-lg transition-all duration-300 flex items-center gap-2 group">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,29 +235,28 @@ const Navbar = () => {
                   </svg>
                 </button>
                 
-                <div className="absolute left-0 mt-3 w-56 bg-white/95 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transform translate-y-4 transition-all duration-500 z-30 overflow-hidden">
+                <div className="absolute left-0 mt-3 w-96 bg-white/95 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transform translate-y-4 transition-all duration-500 z-30 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-teal-50/50 to-cyan-50/50" />
-                  <div className="relative p-2">
-                    {genres.map((genre, index) => (
-                      <Link
-                        key={genre.path}
-                        to={`/category/${genre.path}`}
-                        className={`group/item flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg ${
-                          isCategoryActive(genre.path) ? 'bg-white/80 shadow-md' : ''
-                        }`}
-                        style={{ animationDelay: `${index * 50}ms` }}
-                      >
-                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${genre.color} flex items-center justify-center shadow-sm group-hover/item:shadow-md group-hover/item:scale-110 transition-all duration-300`}>
-                          <span className="text-sm">{genre.icon}</span>
-                        </div>
-                        <span className={`text-sm font-medium ${isCategoryActive(genre.path) ? 'text-teal-600' : 'text-gray-700'} group-hover/item:text-teal-600 transition-colors duration-200`}>
-                          {genre.name}
-                        </span>
-                        <svg className="w-4 h-4 text-gray-400 group-hover/item:text-teal-500 group-hover/item:translate-x-1 transition-all duration-200 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
-                    ))}
+                  <div className="relative p-3">
+                    <div className="grid grid-cols-2 gap-1">
+                      {genres.map((genre, index) => (
+                        <Link
+                          key={genre.path}
+                          to={`/category/${genre.path}`}
+                          className={`group/item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg ${
+                            isCategoryActive(genre.path) ? 'bg-white/80 shadow-md' : ''
+                          }`}
+                          style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                          <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${genre.color} flex items-center justify-center shadow-sm group-hover/item:shadow-md group-hover/item:scale-110 transition-all duration-300 flex-shrink-0`}>
+                            <span className="text-sm">{genre.icon}</span>
+                          </div>
+                          <span className={`text-sm font-medium ${isCategoryActive(genre.path) ? 'text-teal-600' : 'text-gray-700'} group-hover/item:text-teal-600 transition-colors duration-200 truncate`}>
+                            {genre.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -264,7 +269,11 @@ const Navbar = () => {
                 >
                   <div className="relative">
                     <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                      {currentUser.username.charAt(0).toUpperCase()}
+                      {currentUser.image ? (
+                        <img src={currentUser.image} alt={currentUser.username} className="w-full h-full rounded-full object-cover" />
+                      ) : (
+                        currentUser.username.charAt(0).toUpperCase()
+                      )}
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-sm" />
                   </div>
@@ -348,7 +357,7 @@ const Navbar = () => {
         >
           <div className="px-4 py-6 space-y-2">
             <Link 
-              to="/" 
+              to="/explore" 
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                 isActiveLink('/') 
                   ? 'text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-lg' 
@@ -359,10 +368,10 @@ const Navbar = () => {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              Home
+              Explore
             </Link>
 
-            {/* Enhanced Mobile Genres */}
+            {/* Enhanced Mobile Genres with Two Columns */}
             <div>
               <button
                 onClick={() => setIsOpenGenres(!isOpenGenres)}
@@ -384,24 +393,26 @@ const Navbar = () => {
                 </svg>
               </button>
               
-              <div className={`overflow-hidden transition-all duration-500 ${isOpenGenres ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="ml-4 mt-2 space-y-1">
-                  {genres.map((genre, index) => (
-                    <Link
-                      key={genre.path}
-                      to={`/category/${genre.path}`}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                        isCategoryActive(genre.path) ? 'bg-teal-50 text-teal-600' : 'text-gray-600 hover:text-teal-600 hover:bg-teal-50'
-                      }`}
-                      onClick={() => setIsOpen(false)}
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${genre.color} flex items-center justify-center shadow-sm`}>
-                        <span className="text-xs">{genre.icon}</span>
-                      </div>
-                      {genre.name}
-                    </Link>
-                  ))}
+              <div className={`overflow-hidden transition-all duration-500 ${isOpenGenres ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="ml-4 mt-2">
+                  <div className="grid grid-cols-2 gap-1">
+                    {genres.map((genre, index) => (
+                      <Link
+                        key={genre.path}
+                        to={`/category/${genre.path}`}
+                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl transition-all duration-300 ${
+                          isCategoryActive(genre.path) ? 'bg-teal-50 text-teal-600' : 'text-gray-600 hover:text-teal-600 hover:bg-teal-50'
+                        }`}
+                        onClick={() => setIsOpen(false)}
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${genre.color} flex items-center justify-center shadow-sm flex-shrink-0`}>
+                          <span className="text-xs">{genre.icon}</span>
+                        </div>
+                        <span className="text-sm font-medium truncate">{genre.name}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
