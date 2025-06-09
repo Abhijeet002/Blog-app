@@ -309,10 +309,7 @@ const Explore = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative overflow-hidden">
                       <img
-                        src={
-                          // featuredPost?.img ||
-                          `/uploads/${featuredPost.img}`
-                        }
+                        src={featuredPost?.img}
                         alt={featuredPost.title}
                         className="w-full h-64 md:h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -390,7 +387,7 @@ const Explore = () => {
                   >
                     <div className="relative overflow-hidden">
                       <img
-                        src={`/uploads/${post.img}`}
+                        src={post.img}
                         alt={post.title}
                         className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
                       />
