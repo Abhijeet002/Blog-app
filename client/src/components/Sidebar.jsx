@@ -188,7 +188,7 @@ const Sidebar = ({ category }) => {
                     <div className="relative overflow-hidden rounded-t-xl">
                       <img
                         className="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-110"
-                        src={`/uploads/${post.img}`}
+                        src={post.img}
                         alt={post.title}
                         loading="lazy"
                         onError={(e) => {
