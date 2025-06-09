@@ -547,7 +547,7 @@ const Write = () => {
         )}
       </div>
 
-      {/* Fixed Action Bar for Mobile */}
+      {/* Action Bar for Mobile */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4">
         <div className="flex space-x-3">
           <button
