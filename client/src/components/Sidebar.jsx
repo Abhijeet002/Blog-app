@@ -92,7 +92,7 @@ const Sidebar = ({ category }) => {
           Oops! Something went wrong
         </h3>
         <p className="text-slate-600 text-sm mb-4">
-          {error}
+          {JSON.stringify(error) || "An unexpected error occurred while fetching posts."}
         </p>
         <button
           onClick={handleRetry}

@@ -121,7 +121,7 @@ const Statsbar = () => {
       </div>
       <h3 className="font-semibold text-slate-900 mb-2">Failed to load stats</h3>
       <p className="text-slate-600 text-sm mb-4 max-w-xs mx-auto">
-        {error}
+        {JSON.stringify(error) || "An unexpected error occurred while fetching the stats. Please try again."}
       </p>
       <button
         onClick={handleRetry}

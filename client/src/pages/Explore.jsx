@@ -163,7 +163,7 @@ const Explore = () => {
           <h3 className="text-xl font-bold text-slate-900 mb-3">
             Something went wrong
           </h3>
-          <p className="text-slate-600 mb-8">{error}</p>
+          <p className="text-slate-600 mb-8">{JSON.stringify(error)}</p>
           <button
             onClick={() => window.location.reload()}
             className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
