@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contextProvider/authContext";
+import { AuthContext } from "../contextProvider/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
