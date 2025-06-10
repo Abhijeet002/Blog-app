@@ -1,4 +1,3 @@
-// src/components/ScrollToTop.jsx - Enhanced Version
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 

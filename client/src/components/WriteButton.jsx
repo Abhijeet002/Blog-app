@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../contextProvider/authContext";
+import { AuthContext } from "../contextProvider/AuthContext";
 import AuthPromptModal from "./AuthPromptModal";
 import { Link } from "react-router-dom";
 

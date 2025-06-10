@@ -1,4 +1,3 @@
-// Simple and elegant BackButton component - Recommended for best UX
 import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -24,12 +23,14 @@ const BackButton = ({
   return (
     <button
       onClick={handleBack}
-      className="
+      className={`
         inline-flex items-center gap-3 px-4 py-3 
         text-gray-700 
         rounded-2xl font-semibold
         hover:text-[#3fcd9d]
-        transition-all duration-300 transform hover:scale-105"
+        transition-all duration-300 transform hover:scale-105
+        ${className}
+      `}
       title="Go back to previous page"
     >
       {showIcon && <ArrowLeft className="w-5 h-5" />}

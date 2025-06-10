@@ -1,5 +1,3 @@
-// client/src/components/AuthPromptModal.jsx
-
 import React from 'react';
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
