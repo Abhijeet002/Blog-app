@@ -30,3 +30,7 @@ dist-ssr
 /api/.env
 /api/.env.*.local
 **.env
+
+
+*.sql
+dump.sql
