@@ -61,7 +61,7 @@ echoes-and-edits/
 │       ├── components/
 │       ├── pages/
 │       └── main.jsx
-├── server/              # Express Backend
+├── api/              # Express Backend
 │   ├── controllers/
 │   ├── routes/
 │   ├── index.js/
