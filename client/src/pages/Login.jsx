@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contextProvider/authContext";
+import { AuthContext } from "../contextProvider/AuthContext";
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -39,7 +39,6 @@ const Login = () => {
       // Keep loading state active during redirect delay
       setTimeout(() => {
         navigate("/");
-        // Don't set loading to false here - let the component unmount
       }, 1000);
     } catch (err) {
       setErr(err.response.data);

@@ -1,4 +1,3 @@
-// Enhanced Professional Single.jsx with premium UI/UX improvements
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2, AlertTriangle, X, Calendar, User, Eye, Share2, BookOpen, Clock, Heart, Bookmark, MessageCircle, ArrowUp } from "lucide-react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
@@ -6,10 +5,10 @@ import axios from "axios";
 import moment from "moment"
 import Sidebar from "../components/Sidebar";
 import { useContext } from "react";
-import { AuthContext } from "../contextProvider/authContext";
+import { AuthContext } from "../contextProvider/AuthContext";
 import BackButton from "../components/BackButton";
 
-// Enhanced Delete Confirmation Dialog Component with glassmorphism
+// Delete Confirmation Dialog Component with glassmorphism
 const DeleteConfirmDialog = ({ isOpen, onClose, onConfirm, postTitle, isDeleting }) => {
   if (!isOpen) return null;
 

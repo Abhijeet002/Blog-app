@@ -6,7 +6,7 @@ import AuthPromptModal from '../components/AuthPromptModal'; // Added import
 import { AuthContext } from '../contextProvider/AuthContext';
 
 const Home = () => {
-  const [showAuthPrompt, setShowAuthPrompt] = useState(false); // Changed to false
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false); 
   const { currentUser } = useContext(AuthContext);
   
   // Function to handle restricted actions
@@ -49,7 +49,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f9fa] via-[#f1f3f4] to-[#e8f5e8] text-[#0b0c0b] font-body overflow-x-hidden">
-      {/* Auth Modal - Added this */}
+      
       {!currentUser && (
         <AuthPromptModal
           isOpen={showAuthPrompt}

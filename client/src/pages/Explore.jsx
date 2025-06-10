@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../contextProvider/authContext";
+import { AuthContext } from "../contextProvider/AuthContext";
 import Statsbar from "../components/Statsbar";
 import moment from "moment";
 import AuthPromptModal from "../components/AuthPromptModal";

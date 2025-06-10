@@ -1,5 +1,3 @@
-// client\src\pages\Write.jsx
-
 import React, { useState, useEffect } from "react";
 import TextEditor from "../components/TextEditor";
 import axios from "axios";
