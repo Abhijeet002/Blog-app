@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, PenTool, BookOpen, Users, Star, TrendingUp, Heart, MessageCircle } from 'lucide-react';
 import WriteButton from '../components/WriteButton';
 import AuthPromptModal from '../components/AuthPromptModal'; // Added import
-import { AuthContext } from '../contextProvider/authContext';
+import { AuthContext } from '../contextProvider/AuthContext';
 
 const Home = () => {
   const [showAuthPrompt, setShowAuthPrompt] = useState(false); // Changed to false
