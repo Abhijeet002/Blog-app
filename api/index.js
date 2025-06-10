@@ -24,6 +24,7 @@ app.use(
 
 
 dotenv.config();
+const port = process.env.BE_PORT || 5000;
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -162,6 +163,6 @@ app.use("/posts", PostRoutes);
 app.use("/auth", AuthRoutes);
 app.use("/user", UserRoutes);
 
-app.listen(5000, () => {
-  console.log(`Server is connected and running on port 5000`);
+app.listen(port, () => {
+console.log(`Server is connected and running on port ${port}`);
 });
