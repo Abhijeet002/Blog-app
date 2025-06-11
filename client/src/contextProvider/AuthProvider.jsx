@@ -1,8 +1,6 @@
-// client\src\contextProvider\AuthProvider.jsx
-
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { AuthContext } from "./AuthContext";
+import API from "../utils/api";
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
@@ -11,9 +9,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async (inputs) => {
     try {
-      const res = await axios.post("/auth/login", inputs, {
-        withCredentials: true,
-      });
+      const res = await API.post("/auth/login", inputs);
       setCurrentUser(res.data);
       return res.data; // Return user data for success handling
     } catch (err) {
@@ -24,7 +20,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("/auth/logout", {}, { withCredentials: true });
+      await API.post("/auth/logout", {}, { withCredentials: true });
       setCurrentUser(null);
       localStorage.removeItem("user");
     } catch (err) {

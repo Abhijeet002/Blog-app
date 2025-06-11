@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import API from "../utils/api";
 
 const Sidebar = ({ category }) => {
   const [posts, setPosts] = useState([]);
@@ -13,7 +13,7 @@ const Sidebar = ({ category }) => {
         setLoading(true);
         setError(null);
 
-        const res = await axios.get(`/posts${category ? `/category/${category}` : ''}`);
+        const res = await API.get(`/posts${category ? `/category/${category}` : ''}`);
         setPosts(res.data);
         console.log("Fetched posts:", res.data);
       } catch (err) {
@@ -34,7 +34,7 @@ const Sidebar = ({ category }) => {
         setLoading(true);
         setError(null);
 
-        const res = await axios.get(`/posts${category ? `/category/${category}` : ''}`);
+        const res = await API.get(`/posts${category ? `/category/${category}` : ''}`);
         setPosts(res.data);
       } catch (err) {
         console.error("Error fetching posts:", err);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextEditor from "../components/TextEditor";
-import axios from "axios";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import API from "../utils/api";
 
 const cleanContent = (content) => {
   if (!content) return "";
@@ -182,7 +182,7 @@ const Write = () => {
     if (isEditing && !stateData?.title) {
       const fetchPostData = async () => {
         try {
-          const response = await axios.get(`/posts/${editId}`);
+          const response = await API.get(`/posts/${editId}`);
           const post = response.data;
 
           setPostData({
@@ -271,15 +271,11 @@ const Write = () => {
         const formData = new FormData();
         formData.append("file", imageFile);
 
-        uploadResponse = await axios.post(
-          "http://localhost:5000/uploads",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        uploadResponse = await API.post("/uploads", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         uploadedFilename = uploadResponse.data.filename;
         showToast("Image uploaded successfully", "success");
@@ -296,9 +292,7 @@ const Write = () => {
       };
 
       if (isEditing) {
-        await axios.put(`http://localhost:5000/posts/${editId}`, submitData, {
-          withCredentials: true,
-        });
+        await API.put(`/posts/${editId}`, submitData);
 
         showToast(
           `Post ${saveAsDraft ? "saved as draft" : "updated"} successfully!`,
@@ -310,14 +304,7 @@ const Write = () => {
           navigate(`/post/${editId}`);
         }, 1500);
       } else {
-        const response = await axios.post(
-          "http://localhost:5000/posts",
-          submitData,
-          {
-            withCredentials: true,
-          }
-        );
-
+        const response = await API.post("/posts", submitData);
         showToast(
           `Post ${saveAsDraft ? "saved as draft" : "published"} successfully!`,
           "success"

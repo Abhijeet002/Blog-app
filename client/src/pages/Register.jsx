@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../utils/api";
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -113,7 +113,7 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      await axios.post("/auth/register", inputs);
+      await API.post("/auth/register", inputs);
       // Keep loading state active during redirect delay
       setTimeout(() => {
         navigate("/login");

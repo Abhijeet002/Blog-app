@@ -9,7 +9,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import API from "../utils/api";
 
 const CategoryPage = () => {
   const [posts, setPosts] = useState([]);
@@ -26,7 +26,7 @@ const CategoryPage = () => {
         setLoading(true);
         setError(null);
 
-        const res = await axios.get(`/posts/category/${category}`);
+        const res = await API.get(`/posts/category/${category}`);
 
         setPosts(res.data);
         console.log("Fetched posts:", res.data); // Debug log

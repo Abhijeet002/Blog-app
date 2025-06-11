@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2, AlertTriangle, X, Calendar, User, Eye, Share2, BookOpen, Clock, Heart, Bookmark, MessageCircle, ArrowUp } from "lucide-react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import moment from "moment"
 import Sidebar from "../components/Sidebar";
 import { useContext } from "react";
 import { AuthContext } from "../contextProvider/AuthContext";
 import BackButton from "../components/BackButton";
+import API from "../utils/api";
 
 // Delete Confirmation Dialog Component with glassmorphism
 const DeleteConfirmDialog = ({ isOpen, onClose, onConfirm, postTitle, isDeleting }) => {
@@ -203,7 +203,7 @@ const Single = () => {
           setError(null);
           
           console.log(`Making API call to: /posts/${id}`);
-          const res = await axios.get(`/posts/${id}`);
+          const res = await API.get(`/posts/${id}`);
           setPost(res.data);
           console.log("Fetched post from API:", res.data);
         } catch (err) {
@@ -240,12 +240,8 @@ const Single = () => {
     setIsDeleting(true);
     
     try {
-      await axios.delete(`/posts/${id}`, {
-        withCredentials: true
-      });
-      
+      await API.delete(`/posts/${id}`);
       showToast("Post deleted successfully!", 'success');
-      
       setTimeout(() => {
         navigate("/explore");
       }, 1500);

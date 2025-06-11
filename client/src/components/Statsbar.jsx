@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import API from "../utils/api";
 
 const Statsbar = () => {
   const [posts, setPosts] = useState([]);
@@ -16,8 +16,8 @@ const Statsbar = () => {
         setError(null);
 
         const res = category
-          ? await axios.get(`/posts/category/${category}`)
-          : await axios.get(`/posts`);
+          ? await API.get(`/posts/category/${category}`)
+          : await API.get(`/posts`);
 
         setPosts(res.data || []);
         console.log("Fetched stats:", res.data);
@@ -42,8 +42,8 @@ const Statsbar = () => {
         setError(null);
 
         const res = category
-          ? await axios.get(`/posts/category/${category}`)
-          : await axios.get(`/posts`);
+          ? await API.get(`/posts/category/${category}`)
+          : await API.get(`/posts`);
 
         setPosts(res.data || []);
       } catch (err) {

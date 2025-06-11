@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contextProvider/AuthContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import moment from "moment";
+import API from "../utils/api";
 
 const Profile = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -68,7 +68,7 @@ const handleUpload = async () => {
     console.log("Starting upload...", selectedFile.name);
     
     // Upload image to Cloudinary
-    const uploadRes = await axios.post("/uploads", formData, {
+    const uploadRes = await API.post("/uploads", formData, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
       timeout: 120000, // 2 minutes timeout to match backend
@@ -93,9 +93,9 @@ const handleUpload = async () => {
 
     // Update user profile with new image URL
     console.log("Updating user profile with image URL:", uploadRes.data.url);
-    
-    const updateRes = await axios.put(
-      `http://localhost:5000/user/${currentUser.id}`,
+
+    const updateRes = await API.put(
+      `/user/${currentUser.id}`,
       {
         image: uploadRes.data.url,
       },
@@ -209,9 +209,7 @@ const handleUpload = async () => {
     
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/posts/user/${currentUser.username}`, {
-        withCredentials: true,
-      });
+      const res = await API.get(`/posts/user/${currentUser.username}`);
       setUserPosts(res.data);
     } catch (err) {
       console.error("Error fetching user posts:", err);

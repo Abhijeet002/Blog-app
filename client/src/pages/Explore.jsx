@@ -9,11 +9,11 @@ import {
   Search,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../contextProvider/AuthContext";
 import Statsbar from "../components/Statsbar";
 import moment from "moment";
 import AuthPromptModal from "../components/AuthPromptModal";
+import API from "../utils/api";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
@@ -32,8 +32,8 @@ const Explore = () => {
         setError(null);
 
         const res = category
-          ? await axios.get(`/posts/category/${category}`)
-          : await axios.get(`/posts`);
+          ? await API.get(`/posts/category/${category}`)
+          : await API.get(`/posts`);
 
         setPosts(res.data);
         console.log("Fetched posts:", res.data);
