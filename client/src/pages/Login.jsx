@@ -34,25 +34,35 @@ const Login = () => {
     if (!isFormValid) return;
 
     setIsLoading(true);
+    setErr(null);
+    
     try {
       await login(inputs);
       // Keep loading state active during redirect delay
       setTimeout(() => {
         navigate("/");
       }, 1000);
-    } catch (err) {
-      // setErr(err.response.data);
-      setErr(
-        err.response?.data?.message || // if backend uses "message"
-          err.response?.data?.error || // if backend uses "error"
-          "Login failed. Please try again."
-      );
+    } catch (error) {
+      console.error("Login error:", error);
+      
+      // Handle different error formats
+      let errorMessage = "Login failed. Please try again.";
+      
+      if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error && typeof error === 'object') {
+        errorMessage = error.message || 
+                     error.error || 
+                     errorMessage;
+      }
+      
+      setErr(errorMessage);
 
-      if (err.response.status == 409) {
+      // Handle specific status codes
+      if (error.status === 409) {
         // Keep loading state for redirect to register
         setTimeout(() => {
           navigate("/register");
-          // Don't set loading to false here - let the component unmount
         }, 1000);
       } else {
         // Only set loading to false if we're not redirecting
@@ -190,8 +200,7 @@ const Login = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {/* {(err) || <p></p>} */}
-                  <p>{err || "Something went wrong"}</p>
+                  <p>{err}</p>
                 </div>
               </div>
             )}
