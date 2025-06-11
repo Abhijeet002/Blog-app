@@ -1,5 +1,3 @@
-// api\index.js
-
 import express from "express";
 import cookieParser from "cookie-parser";
 import PostRoutes from "./routes/posts.js";
@@ -14,13 +12,19 @@ import fs from "fs";
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",                     // local frontend
+  "https://blog-app-three-topaz.vercel.app"        // deployed frontend 
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // or simply `*` during development
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true, // to send cookies
+    credentials: true,
   })
 );
+
 
 
 dotenv.config();
