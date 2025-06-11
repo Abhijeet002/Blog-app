@@ -2,7 +2,8 @@
 
 A feature-rich, full-stack blog platform where users can create, explore, and manage blog posts with beautiful UI and secure backend services.
 
-<!-- > 🚀 **Live Demo**: [https://your-deployed-url.com](https://your-deployed-url.com)   -->
+> 🚀 **Live Demo**: (https://blog-app-three-topaz.vercel.app/)  
+
 > 📂 **Frontend**: React + Vite + Tailwind CSS  
 > 🔧 **Backend**: Node.js + Express.js + PostgreSQL   
 > 👤 **Author**: Abhijeet
@@ -85,11 +86,11 @@ echoes-and-edits/
 
 ```bash
 git clone https://github.com/Abhijeet002/Blog-app.git
-cd blog-app/server
+cd blog-app/api
 npm install
 ```
 
-Create a `.env` file in `server/`:
+Create a `.env` file in `api/`:
 
 ```env
 PORT=5000
@@ -114,6 +115,11 @@ nodemon start
 ---
 
 ### 🎨 Frontend Setup
+
+Create a `.env` file in `client/`:
+```env
+VITE_API_URL= your-frontend-url
+```
 
 ```bash
 cd ../client
