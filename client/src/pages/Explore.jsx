@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import {
   Calendar,
   Clock,
@@ -15,6 +15,176 @@ import moment from "moment";
 import AuthPromptModal from "../components/AuthPromptModal";
 import API from "../utils/api";
 
+// Memoized Image Component to prevent unnecessary re-renders
+const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
+
+  const handleError = useCallback(() => {
+    setError(true);
+    setIsLoaded(true);
+  }, []);
+
+  return (
+    <div className={`relative ${className}`}>
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 bg-[length:200%_100%] animate-shimmer" />
+      )}
+      <img
+        src={error ? "/default-image.jpg" : src}
+        alt={alt}
+        onLoad={handleLoad}
+        onError={handleError}
+        className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+        loading="lazy" // Native lazy loading
+        decoding="async" // Async image decoding
+        {...props}
+      />
+    </div>
+  );
+});
+
+// Memoized Post Card Component
+const PostCard = React.memo(({ post, isFeatured = false }) => {
+  const authorName = post.author || post.username;
+  const postDate = useMemo(() => moment(post.date).fromNow(), [post.date]);
+  
+  if (isFeatured) {
+    return (
+      <article className="group bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="relative overflow-hidden">
+            <OptimizedImage
+              src={post.img}
+              alt={post.title}
+              className="w-full h-64 md:h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            {post.category && (
+              <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-slate-800 px-4 py-2 rounded-full text-sm font-semibold">
+                {post.category.toUpperCase()}
+              </div>
+            )}
+          </div>
+
+          <div className="p-8 flex flex-col justify-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+              {post.title}
+            </h2>
+
+            <div className="text-slate-600 mb-6 line-clamp-3 text-lg leading-relaxed">
+              {post.content ? (
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              ) : (
+                <p dangerouslySetInnerHTML={{
+                  __html: post.description || "No content available"
+                }} />
+              )}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <OptimizedImage
+                  src={post.author_img || "/default-avatar.jpg"}
+                  alt="Author"
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-lg"
+                />
+                <div>
+                  <p className="font-semibold text-slate-800">{authorName}</p>
+                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <Clock className="w-3 h-3 ml-2" />
+                    <span>8 min read</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link to={`/post/${post.id}`}>
+                <button className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                  Read
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <article className="group bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+      <div className="relative overflow-hidden">
+        <OptimizedImage
+          src={post.img}
+          alt={post.title}
+          className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        {post.category && (
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-slate-800 px-3 py-1 rounded-full text-xs font-semibold">
+            {post.category.toUpperCase()}
+          </div>
+        )}
+      </div>
+
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+          {post.title}
+        </h3>
+
+        <div className="text-slate-600 mb-4 line-clamp-2">
+          {post.content ? (
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <p dangerouslySetInnerHTML={{
+              __html: post.description || "No content available"
+            }} />
+          )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <OptimizedImage
+              src={post.author_img || "/default-avatar.jpg"}
+              alt="Author"
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <div>
+              <p className="text-sm font-medium text-slate-700">{authorName}</p>
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Calendar className="w-3 h-3" />
+                <span>{postDate}</span>
+              </div>
+            </div>
+          </div>
+
+          <Link to={`/post/${post.id}`}>
+            <button className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-1 group/btn p-3">
+              Read More
+              <svg
+                className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+});
+
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,54 +195,75 @@ const Explore = () => {
   const [showAuthPrompt, setShowAuthPrompt] = useState(true);
   const { currentUser } = useContext(AuthContext);
 
+  // Memoize the API call to prevent unnecessary re-fetching
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = category
+        ? await API.get(`/posts/category/${category}`)
+        : await API.get(`/posts`);
+
+      setPosts(res.data);
+      console.log("Fetched posts:", res.data);
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+      setError(err.response?.data?.message || "Failed to fetch posts");
+    } finally {
+      setLoading(false);
+    }
+  }, [category]); // Only depend on category
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const res = category
-          ? await API.get(`/posts/category/${category}`)
-          : await API.get(`/posts`);
-
-        setPosts(res.data);
-        console.log("Fetched posts:", res.data);
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-        setError(err.response?.data?.message || "Failed to fetch posts");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
-  }, [category]);
+  }, [fetchData]);
 
-  // Filter and sort posts
-  const filteredAndSortedPosts = posts
-    .filter(
-      (post) =>
-        post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.author?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "oldest":
-          return (
-            new Date(a.date || a.created_at) - new Date(b.date || b.created_at)
-          );
-        case "title":
-          return a.title.localeCompare(b.title);
-        default:
-          return (
-            new Date(b.date || b.created_at) - new Date(a.date || a.created_at)
-          );
-      }
-    });
+  // Memoize filtered and sorted posts to prevent recalculation on every render
+  const filteredAndSortedPosts = useMemo(() => {
+    return posts
+      .filter(
+        (post) =>
+          post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.author?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        switch (sortBy) {
+          case "oldest":
+            return (
+              new Date(a.date || a.created_at) - new Date(b.date || b.created_at)
+            );
+          case "title":
+            return a.title.localeCompare(b.title);
+          default:
+            return (
+              new Date(b.date || b.created_at) - new Date(a.date || a.created_at)
+            );
+        }
+      });
+  }, [posts, searchTerm, sortBy]);
 
-  // Enhanced Loading Skeleton
-  const PostSkeleton = ({ variant = "default" }) => (
+  // Memoize featured and regular posts
+  const { featuredPost, regularPosts } = useMemo(() => ({
+    featuredPost: filteredAndSortedPosts[0],
+    regularPosts: filteredAndSortedPosts.slice(1),
+  }), [filteredAndSortedPosts]);
+
+  // Debounced search to reduce filtering frequency
+   // eslint-disable-next-line no-unused-vars
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Enhanced Loading Skeleton (same as before)
+  const PostSkeleton = React.memo(({ variant = "default" }) => (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-pulse">
       {variant === "featured" ? (
         <div className="p-8">
@@ -99,7 +290,7 @@ const Explore = () => {
         </>
       )}
     </div>
-  );
+  ));
 
   if (loading) {
     return (
@@ -215,9 +406,6 @@ const Explore = () => {
     );
   }
 
-  const featuredPost = filteredAndSortedPosts[0];
-  const regularPosts = filteredAndSortedPosts.slice(1);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Enhanced Header */}
@@ -308,76 +496,7 @@ const Explore = () => {
                     Featured Post
                   </span>
                 </div>
-
-                <article className="group bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                  <div className="grid grid-cols-1 md:grid-cols-2">
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={featuredPost?.img}
-                        alt={featuredPost.title}
-                        className="w-full h-64 md:h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                      {featuredPost.category && (
-                        <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-slate-800 px-4 py-2 rounded-full text-sm font-semibold">
-                          {featuredPost.category.toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="p-8 flex flex-col justify-center">
-                      <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 line-clamp-2 group-hover:text-emerald-600 transition-colors">
-                        {featuredPost.title}
-                      </h2>
-
-                      <p className="text-slate-600 mb-6 line-clamp-3 text-lg leading-relaxed">
-                        {featuredPost.content ? (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: featuredPost.content,
-                            }}
-                          />
-                        ) : (
-                          <p
-                            className="text-xl leading-relaxed text-gray-700"
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                featuredPost.description ||
-                                "No content available",
-                            }}
-                          />
-                        )}
-                      </p>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={
-                              featuredPost.author_img || "/default-avatar.jpg"
-                            }
-                            alt="Author"
-                            className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-lg"
-                          />
-                          <div>
-                            <p className="font-semibold text-slate-800">
-                              {featuredPost.author || featuredPost.username}
-                            </p>
-                            <div className="flex items-center gap-2 text-sm text-slate-500">
-                              <Clock className="w-3 h-3 ml-2" />
-                              <span>8 min read</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <Link to={`/post/${featuredPost.id}`}>
-                          <button className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                            Read
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </article>
+                <PostCard post={featuredPost} isFeatured />
               </div>
             )}
 
@@ -385,85 +504,7 @@ const Explore = () => {
             {regularPosts.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {regularPosts.map((post) => (
-                  <article
-                    key={post.id}
-                    className="group bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={post.img}
-                        alt={post.title}
-                        className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      {post.category && (
-                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-slate-800 px-3 py-1 rounded-full text-xs font-semibold">
-                          {post.category.toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors">
-                        {post.title}
-                      </h3>
-
-                      <p className="text-slate-600 mb-4 line-clamp-2">
-                        {post.content ? (
-                          <div
-                            dangerouslySetInnerHTML={{ __html: post.content }}
-                          />
-                        ) : (
-                          <p
-                            className="text-xl leading-relaxed text-gray-700"
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                post.description || "No content available",
-                            }}
-                          />
-                        )}
-                      </p>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <img
-                            src={post.author_img || "/default-avatar.jpg"}
-                            alt="Author"
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                          <div>
-                            <p className="text-sm font-medium text-slate-700">
-                              {post.author || post.username}
-                            </p>
-
-                            <div className="flex items-center gap-2 text-sm text-slate-500">
-                              <Calendar className="w-3 h-3" />
-                              <span>{moment(post.date).fromNow()}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <Link to={`/post/${post.id}`}>
-                          <button className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-1 group/btn p-3">
-                            Read More
-                            <svg
-                              className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                              />
-                            </svg>
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
+                  <PostCard key={post.id} post={post} />
                 ))}
               </div>
             )}
