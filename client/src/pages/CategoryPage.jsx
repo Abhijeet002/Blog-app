@@ -137,7 +137,10 @@ const CategoryPage = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Oops! Something went wrong
           </h2>
-          <p className="text-gray-600 mb-6">{JSON.stringify(error)}</p>
+          <p className="text-gray-600 mb-6">
+            {/* {JSON.stringify(error)} */}
+            <p>Something went wrong</p>
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="bg-[#3fcd9d] text-white px-6 py-3 rounded-lg hover:bg-[#2bbd8e] transition-colors"

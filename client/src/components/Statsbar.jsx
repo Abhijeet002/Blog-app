@@ -23,7 +23,9 @@ const Statsbar = () => {
         console.log("Fetched stats:", res.data);
       } catch (err) {
         console.error("Error fetching stats:", err);
-        setError(err.response?.data?.message || err.message || "Failed to fetch stats");
+        setError(
+          err.response?.data?.message || err.message || "Failed to fetch stats"
+        );
       } finally {
         setLoading(false);
       }
@@ -46,7 +48,9 @@ const Statsbar = () => {
         setPosts(res.data || []);
       } catch (err) {
         console.error("Error fetching stats:", err);
-        setError(err.response?.data?.message || err.message || "Failed to fetch stats");
+        setError(
+          err.response?.data?.message || err.message || "Failed to fetch stats"
+        );
       } finally {
         setLoading(false);
       }
@@ -72,7 +76,10 @@ const Statsbar = () => {
         <div className="h-3 bg-slate-200 rounded w-20 mb-3"></div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+            <div
+              key={i}
+              className="flex items-center justify-between p-3 bg-slate-50 rounded-xl"
+            >
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-slate-200 rounded-lg"></div>
                 <div className="h-4 bg-slate-200 rounded w-20"></div>
@@ -119,9 +126,12 @@ const Statsbar = () => {
           />
         </svg>
       </div>
-      <h3 className="font-semibold text-slate-900 mb-2">Failed to load stats</h3>
+      <h3 className="font-semibold text-slate-900 mb-2">
+        Failed to load stats
+      </h3>
       <p className="text-slate-600 text-sm mb-4 max-w-xs mx-auto">
-        {JSON.stringify(error) || "An unexpected error occurred while fetching the stats. Please try again."}
+        Something went wrong
+        {/* {JSON.stringify(error) || "An unexpected error occurred while fetching the stats. Please try again."} */}
       </p>
       <button
         onClick={handleRetry}
@@ -165,15 +175,23 @@ const Statsbar = () => {
       </div>
       <h3 className="font-semibold text-slate-900 mb-2">No posts found</h3>
       <p className="text-slate-600 text-sm">
-        {category ? `No posts in "${category}" category yet.` : "No posts have been published yet."}
+        {category
+          ? `No posts in "${category}" category yet.`
+          : "No posts have been published yet."}
       </p>
     </div>
   );
 
   // Stats Content Component
   const StatsContent = () => {
-    const categories = [...new Set(posts.map((p) => p.category).filter(Boolean))];
-    const authors = [...new Set(posts.map((p) => p.author_email || p.username).filter(Boolean))];
+    const categories = [
+      ...new Set(posts.map((p) => p.category).filter(Boolean)),
+    ];
+    const authors = [
+      ...new Set(
+        posts.map((p) => p.author_email || p.username).filter(Boolean)
+      ),
+    ];
 
     return (
       <>
@@ -195,9 +213,7 @@ const Statsbar = () => {
             </svg>
           </div>
           <div>
-            <h3 className="font-bold text-slate-900 text-lg">
-              Blog Overview
-            </h3>
+            <h3 className="font-bold text-slate-900 text-lg">Blog Overview</h3>
             <p className="text-slate-500 text-sm">
               {category ? `Stats for "${category}"` : "Stats & popular topics"}
             </p>
@@ -227,9 +243,7 @@ const Statsbar = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-slate-600 font-medium">
-                  Total Posts
-                </span>
+                <span className="text-slate-600 font-medium">Total Posts</span>
               </div>
               <span className="font-bold text-emerald-600 text-lg">
                 {posts.length}
@@ -347,7 +361,9 @@ const Statsbar = () => {
               </div>
             </>
           ) : (
-            <p className="text-slate-500 text-sm italic">No categories available</p>
+            <p className="text-slate-500 text-sm italic">
+              No categories available
+            </p>
           )}
         </div>
       </>
@@ -367,7 +383,7 @@ const Statsbar = () => {
               display: none;
             }
           `}</style>
-          
+
           {loading && <LoadingSkeleton />}
           {error && !loading && <ErrorState />}
           {!loading && !error && posts.length === 0 && <EmptyState />}

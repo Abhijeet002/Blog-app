@@ -361,7 +361,10 @@ const Single = () => {
             <AlertTriangle className="w-10 h-10 text-red-600" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Oops! Something went wrong</h2>
-          <p className="text-gray-600 mb-8 text-lg leading-relaxed">{JSON.stringify(error)}</p>
+          <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+          {/* {JSON.stringify(error)} */}
+          <p>Something went wrong</p>
+          </p>
           <Link 
             to="/explore" 
             className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#3fcd9d] to-[#2bbd8e] text-white rounded-2xl hover:from-[#2bbd8e] hover:to-[#1ea87a] transition-all duration-300 font-semibold shadow-2xl hover:shadow-teal-300/50 transform hover:scale-105"
