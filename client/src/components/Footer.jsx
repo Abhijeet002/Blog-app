@@ -9,8 +9,8 @@ const Footer = () => {
   const socialLinks = [
     { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-400' },
     { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-pink-400' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-600' },
-    { icon: Github, href: '#', label: 'GitHub', color: 'hover:text-gray-400' }
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/abhijeet-sachan/', label: 'LinkedIn', color: 'hover:text-blue-600' },
+    { icon: Github, href: 'https://github.com/Abhijeet002', label: 'GitHub', color: 'hover:text-gray-400' }
   ];
 
   const quickLinks = [
