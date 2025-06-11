@@ -164,8 +164,9 @@ const Explore = () => {
             Something went wrong
           </h3>
           <p className="text-slate-600 mb-8">
-          {/* {JSON.stringify(error)} */}
-          <p>Something went wrong</p>
+            {typeof error === "string"
+              ? error
+              : "Failed to load posts. Please try again."}
           </p>
           <button
             onClick={() => window.location.reload()}
