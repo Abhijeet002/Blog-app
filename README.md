@@ -170,7 +170,7 @@ To contribute:
 For feedback, issues, or collaborations:
 
 **Abhijeet**  
-📧 (mailto:abhijeetsachanwork@example.com)  
+📧 (mailto:abhijeetsachanwork@gmail.com)  
 🔗 [LinkedIn](https://www.linkedin.com/in/abhijeet-sachan/)  
 ---
 
