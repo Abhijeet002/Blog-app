@@ -13,11 +13,13 @@ A feature-rich, full-stack blog platform where users can create, explore, and ma
 
 ## 📸 Screenshots
 
-![Home Page](https://drive.google.com/file/d/12CB150cSqTSEqYACEu9Vj5y__tVD5I5L/view?usp=drive_link)
-![Write Post](https://drive.google.com/file/d/17kOGfK8nJppajwQCUyxlJ3i_OrXtSTuW/view?usp=drive_link)
+![Home Page](/images/home.png)
+![Write Post](/images/write-page.png)
 ![User Profile](https://drive.google.com/file/d/1Mzqn1Lo9uJhthaXDpEHObnHMnaq5Vu06/view?usp=drive_link)
-![Post Page](https://drive.google.com/file/d/17ApZ9EheeQQ51-3MUFKI0CBszGv4XrtF/view?usp=drive_link)
-![Video link](https://www.loom.com/share/636b3f1a88b545c1851b24450c910529?sid=e8db5a17-b11b-48a4-a384-3890b0d81ed4)
+![Post Page](/images/single-post.png)
+![Write Page](/images/write-page.png)
+![Video link](https://www.loom.com/share/636b3f1a88b545c1851b24450c910529?
+sid=e8db5a17-b11b-48a4-a384-3890b0d81ed4)
 
 ---
 
