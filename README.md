@@ -15,11 +15,11 @@ A feature-rich, full-stack blog platform where users can create, explore, and ma
 
 ![Home Page](/images/home.png)
 ![Write Post](/images/write-page.png)
-![User Profile](https://drive.google.com/file/d/1Mzqn1Lo9uJhthaXDpEHObnHMnaq5Vu06/view?usp=drive_link)
+![User Profile](/images/profile.png)
 ![Post Page](/images/single-post.png)
 ![Write Page](/images/write-page.png)
-![Video link](https://www.loom.com/share/636b3f1a88b545c1851b24450c910529?
-sid=e8db5a17-b11b-48a4-a384-3890b0d81ed4)
+[![Watch the Demo Video](/images/explore.png)](https://www.loom.com/share/636b3f1a88b545c1851b24450c910529?sid=869793b8-7a57-40bb-a587-9dc964316ef1)
+
 
 ---
 
