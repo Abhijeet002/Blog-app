@@ -18,6 +18,8 @@ A feature-rich, full-stack blog platform where users can create, explore, and ma
 ![User Profile](/images/profile.png)
 ![Post Page](/images/single-post.png)
 ![Write Page](/images/write-page.png)
+
+## 📸 Demo video
 [![Watch the Demo Video](/images/explore.png)](https://www.loom.com/share/636b3f1a88b545c1851b24450c910529?sid=869793b8-7a57-40bb-a587-9dc964316ef1)
 
 
