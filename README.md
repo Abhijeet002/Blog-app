@@ -6,7 +6,7 @@ A feature-rich, full-stack blog platform where users can create, explore, and ma
 
 > 📂 **Frontend**: React + Vite + Tailwind CSS  
 > 🔧 **Backend**: Node.js + Express.js + PostgreSQL   
-> 🔧 **Deployed using**: Render(for backend) + Railway(for database) + Vercel(for frontend)   
+> 🔧 **Deployed using**: Render(for backend) + Neon.tech(for database) + Vercel(for frontend)   
 > 👤 **Author**: Abhijeet
 
 ---
