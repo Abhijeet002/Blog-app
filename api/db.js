@@ -155,4 +155,4 @@ db.on('error', err => {
   connectWithRetry();
 });
 
-export default db;
+export {db};
