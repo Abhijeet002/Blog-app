@@ -14,7 +14,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",                     // local frontend
-  "https://blog-app-three-topaz.vercel.app"        // deployed vercel frontend 
+  "https://blog-app-three-topaz.vercel.app",        // deployed vercel frontend
+  "https://blog-app-u9ik.onrender.com/"
 ];
 
 app.use(
